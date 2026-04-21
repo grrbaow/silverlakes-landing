@@ -17,11 +17,14 @@ export async function POST(req: NextRequest) {
   if (!(await getAdminSession())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { email, notes } = await req.json();
-  if (!email) return NextResponse.json({ error: 'Email required' }, { status: 400 });
+  if (!email) return NextResponse.json({ error: 'Email or domain required' }, { status: 400 });
+
+  // Normalize: strip leading @ so both "@example.com" and "example.com" store as "example.com"
+  const value = email.toLowerCase().trim().replace(/^@/, '');
 
   const { error } = await supabaseAdmin
     .from('sl_allowlist')
-    .upsert({ email: email.toLowerCase().trim(), notes }, { onConflict: 'email' });
+    .upsert({ email: value, notes }, { onConflict: 'email' });
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ success: true });

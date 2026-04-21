@@ -55,11 +55,12 @@ export async function POST(req: NextRequest) {
     .eq('email', normalizedEmail)
     .limit(1);
 
-  // Check allowlist
+  // Check allowlist — matches exact email OR domain (e.g. "example.com")
+  const domain = normalizedEmail.split('@')[1] ?? '';
   const { data: allowlisted } = await supabaseAdmin
     .from('sl_allowlist')
     .select('id')
-    .eq('email', normalizedEmail)
+    .or(`email.eq.${normalizedEmail},email.eq.${domain}`)
     .limit(1);
 
   const alreadySigned = (existing?.length ?? 0) > 0 || (allowlisted?.length ?? 0) > 0;

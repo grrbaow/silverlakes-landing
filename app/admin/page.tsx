@@ -101,25 +101,36 @@ export default function AdminPage() {
         {/* ALLOWLIST */}
         {!loading && tab === 'allowlist' && (
           <div>
-            <form onSubmit={addAllowlist} style={{ display: 'flex', gap: '12px', marginBottom: '32px', flexWrap: 'wrap' }}>
-              <input value={newEmail} onChange={e => setNewEmail(e.target.value)} type="email" required placeholder="investor@firm.com" style={{ ...inputSt, flex: '1', minWidth: '200px' }} />
+            <form onSubmit={addAllowlist} style={{ display: 'flex', gap: '12px', marginBottom: '8px', flexWrap: 'wrap' }}>
+              <input value={newEmail} onChange={e => setNewEmail(e.target.value)} required placeholder="investor@firm.com or firm.com" style={{ ...inputSt, flex: '1', minWidth: '200px' }} />
               <input value={newNotes} onChange={e => setNewNotes(e.target.value)} placeholder="Notes (optional)" style={{ ...inputSt, flex: '1', minWidth: '200px' }} />
-              <button type="submit" style={{ padding: '12px 24px', background: '#C49A3C', color: '#060C1A', fontSize: '12px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', border: 'none', cursor: 'pointer' }}>Add Email</button>
+              <button type="submit" style={{ padding: '12px 24px', background: '#C49A3C', color: '#060C1A', fontSize: '12px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', border: 'none', cursor: 'pointer' }}>Add</button>
             </form>
+            <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.25)', marginBottom: '28px' }}>
+              Enter a full email to allowlist one person, or a domain (e.g. <code style={{ color: 'rgba(255,255,255,0.4)' }}>blackrock.com</code>) to allowlist everyone from that company. OTP verification still required.
+            </div>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
               <thead><tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                {['Email', 'Notes', 'Added', ''].map(h => <th key={h} style={{ textAlign: 'left', padding: '10px 12px', fontSize: '10px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>{h}</th>)}
+                {['Type', 'Email / Domain', 'Notes', 'Added', ''].map(h => <th key={h} style={{ textAlign: 'left', padding: '10px 12px', fontSize: '10px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>{h}</th>)}
               </tr></thead>
               <tbody>
-                {allowlist.map(a => (
-                  <tr key={a.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                    <td style={tdSt}>{a.email}</td>
-                    <td style={{ ...tdSt, color: 'rgba(255,255,255,0.4)' }}>{a.notes || '—'}</td>
-                    <td style={tdSt}>{fmt(a.added_at)}</td>
-                    <td style={tdSt}><button onClick={() => removeAllowlist(a.id)} style={{ padding: '4px 12px', background: 'rgba(239,68,68,0.15)', color: '#f87171', fontSize: '11px', border: '1px solid rgba(239,68,68,0.3)', cursor: 'pointer' }}>Remove</button></td>
-                  </tr>
-                ))}
-                {allowlist.length === 0 && <tr><td colSpan={4} style={{ ...tdSt, color: 'rgba(255,255,255,0.2)', textAlign: 'center', padding: '40px' }}>No allowlisted emails.</td></tr>}
+                {allowlist.map(a => {
+                  const isDomain = !a.email.includes('@');
+                  return (
+                    <tr key={a.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                      <td style={tdSt}>
+                        <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.08em', padding: '2px 8px', borderRadius: '3px', background: isDomain ? 'rgba(99,179,237,0.15)' : 'rgba(196,154,60,0.15)', color: isDomain ? '#63b3ed' : '#C49A3C' }}>
+                          {isDomain ? 'DOMAIN' : 'EMAIL'}
+                        </span>
+                      </td>
+                      <td style={tdSt}>{isDomain ? `*@${a.email}` : a.email}</td>
+                      <td style={{ ...tdSt, color: 'rgba(255,255,255,0.4)' }}>{a.notes || '—'}</td>
+                      <td style={tdSt}>{fmt(a.added_at)}</td>
+                      <td style={tdSt}><button onClick={() => removeAllowlist(a.id)} style={{ padding: '4px 12px', background: 'rgba(239,68,68,0.15)', color: '#f87171', fontSize: '11px', border: '1px solid rgba(239,68,68,0.3)', cursor: 'pointer' }}>Remove</button></td>
+                    </tr>
+                  );
+                })}
+                {allowlist.length === 0 && <tr><td colSpan={5} style={{ ...tdSt, color: 'rgba(255,255,255,0.2)', textAlign: 'center', padding: '40px' }}>No entries yet.</td></tr>}
               </tbody>
             </table>
           </div>
