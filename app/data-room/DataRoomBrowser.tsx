@@ -92,15 +92,28 @@ export default function DataRoomBrowser({ email }: { email: string }) {
           </div>
         </div>
 
-        {/* Breadcrumbs */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '24px', flexWrap: 'wrap' }}>
-          <button onClick={goHome} style={crumbBtn(path === '')}>Data Room</button>
-          {breadcrumbs.map((crumb, i) => (
-            <span key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '12px' }}>/</span>
-              <button onClick={() => goToBreadcrumb(i)} style={crumbBtn(i === breadcrumbs.length - 1)}>{crumb}</button>
-            </span>
-          ))}
+        {/* Back button + Breadcrumbs */}
+        <div style={{ marginBottom: '24px' }}>
+          {breadcrumbs.length > 0 && (
+            <button
+              onClick={() => {
+                if (breadcrumbs.length === 1) { goHome(); }
+                else { goToBreadcrumb(breadcrumbs.length - 2); }
+              }}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'none', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)', fontSize: '12px', cursor: 'pointer', padding: '6px 12px', marginBottom: '14px', borderRadius: '3px', fontFamily: "'Inter', sans-serif" }}
+            >
+              ← Back
+            </button>
+          )}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+            <button onClick={goHome} style={crumbBtn(path === '')}>Data Room</button>
+            {breadcrumbs.map((crumb, i) => (
+              <span key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '12px' }}>/</span>
+                <button onClick={() => goToBreadcrumb(i)} style={crumbBtn(i === breadcrumbs.length - 1)}>{crumb}</button>
+              </span>
+            ))}
+          </div>
         </div>
 
         {/* File list */}
