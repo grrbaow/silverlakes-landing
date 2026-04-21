@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 import { getSession } from '@/lib/session';
 import { addWatermark } from '@/lib/watermark';
+import { addImageWatermark } from '@/lib/watermark-image';
+import { addXlsxWatermark } from '@/lib/watermark-xlsx';
 
 export const maxDuration = 60;
 
@@ -22,13 +24,21 @@ export async function GET(req: NextRequest) {
 
   const filename = filePath.split('/').pop() || 'file';
   const ext = filename.split('.').pop()?.toLowerCase() || '';
-  const isPdf = ext === 'pdf';
 
+  const isPdf = ext === 'pdf';
+  const isImage = ['jpg', 'jpeg', 'png', 'webp'].includes(ext);
+  const isExcel = ['xlsx', 'xls'].includes(ext);
+
+  const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   let fileBuffer = Buffer.from(await data.arrayBuffer());
 
   if (isPdf) {
-    const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     fileBuffer = Buffer.from(await addWatermark(new Uint8Array(fileBuffer), session.email, today));
+  } else if (isImage) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    fileBuffer = (await addImageWatermark(fileBuffer, session.email, today)) as any;
+  } else if (isExcel) {
+    fileBuffer = Buffer.from(addXlsxWatermark(fileBuffer, session.email, today));
   }
 
   // Log access
@@ -51,8 +61,11 @@ export async function GET(req: NextRequest) {
     mp4: 'video/mp4',
     mov: 'video/quicktime',
   };
-  const contentType = mimeTypes[ext] || 'application/octet-stream';
-  const disposition = action === 'view' && isPdf ? 'inline' : `attachment; filename="${filename}"`;
+
+  // Images served as jpeg after watermark processing
+  const contentType = isImage ? 'image/jpeg' : (mimeTypes[ext] || 'application/octet-stream');
+  const servedFilename = isImage ? filename.replace(/\.[^.]+$/, '.jpg') : filename;
+  const disposition = action === 'view' && (isPdf || isImage) ? 'inline' : `attachment; filename="${servedFilename}"`;
 
   return new NextResponse(fileBuffer, {
     headers: {
