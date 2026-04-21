@@ -24,8 +24,11 @@ export async function middleware(req: NextRequest) {
     try {
       const { payload } = await jwtVerify(token, secret);
 
-      // /sign-nda requires only email verification
+      // /sign-nda: if already signed, skip straight to data room
       if (pathname.startsWith('/sign-nda')) {
+        if ((payload as { signed?: boolean }).signed) {
+          return NextResponse.redirect(new URL('/data-room', req.url));
+        }
         return NextResponse.next();
       }
 
