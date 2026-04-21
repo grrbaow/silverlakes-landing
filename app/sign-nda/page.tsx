@@ -84,8 +84,10 @@ export default function SignNdaPage() {
 
   return (
     <>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Inter:wght@300;400;500;600&display=swap');
         *, *::before, *::after { box-sizing: border-box; }
 
         body { margin: 0; }
@@ -459,7 +461,7 @@ export default function SignNdaPage() {
                   )}
                 </div>
 
-                <div className="timestamp-box">Signing on {now}</div>
+                <div className="timestamp-box" suppressHydrationWarning>Signing on {now}</div>
 
                 <label className="agree-label">
                   <input
