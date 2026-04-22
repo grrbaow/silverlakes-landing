@@ -110,7 +110,7 @@ export default function Home() {
             <tr><td>Target Raise</td><td><span className="hi">Up to $50 million</span> in an asset-specific SPV, held in escrow pending (i) execution of acceptable bond re-purchase terms and (ii) agreement on equity buyout pricing.</td></tr>
             <tr><td>Phase I &mdash; Years 0&ndash;2</td><td><span className="phase-tag">Target EBITDA</span><span className="hi">$5.3M &ndash; $7.1M</span> &middot; No new construction required &middot; Revenue programs activated: Sponsorship, Tournaments, Entertainment, F&amp;B, Parking</td></tr>
             <tr><td>Phase II &mdash; Years 2&ndash;5</td><td><span className="phase-tag">Target EBITDA</span><span className="hi">$10.8M &ndash; $14.6M</span> &middot; Pre-approved construction including 300,000+ SF indoor multi-sport facility + on-site accommodations</td></tr>
-            <tr><td>Ground Lease</td><td>Well below-market at $428K/year with 88 years remaining + 30-year extension option. Comparables start at $25 million/year. <span className="hi">$403M structural NPV.</span></td></tr>
+            <tr><td>Ground Lease</td><td>Well below-market at $428K/year with 88 years remaining. Comparables start at $25 million/year. $403M structural NPV.</td></tr>
             <tr><td>Water Rights</td><td>On-site sources including two deep wells at no cost in perpetuity. <span className="hi">$482M structural value.</span></td></tr>
             <tr><td>Management Fee</td><td>2% per annum on committed capital</td></tr>
             <tr><td>Preferred Return</td><td><span className="hi">8% annualized hurdle rate</span></td></tr>
@@ -164,7 +164,7 @@ export default function Home() {
         <div className="rule"></div>
         <p className="lead">Three components of structural value &mdash; none of which appear in any of the IRR projections above. Comparable sports facilities are being built at multiples of this going-in basis.</p>
         <div className="value-grid">
-          <div className="value-card fade"><div className="value-amt">$403M</div><div className="value-name">Ground Lease</div><div className="value-desc">Deeply below-market lease at $396,000/year, extendable to 129 years. Nearby Ontario Sports Empire&rsquo;s lease starts at $25M/year. NPV of pro forma savings at 6% discount rate over the life of the term.</div></div>
+          <div className="value-card fade"><div className="value-amt">$403M</div><div className="value-name">Ground Lease</div><div className="value-desc">Deeply below-market, 99-year lease, which started at $396,000/year. Nearby Ontario Sports Empire&rsquo;s lease starts at $25M/year. NPV of pro forma savings at 6% discount rate over the life of the term.</div></div>
           <div className="value-card fade"><div className="value-amt">$482M</div><div className="value-name">Water Rights</div><div className="value-desc">On-site sources at zero cost in perpetuity. Conservative savings of $482M over the life of the ground lease versus water sourced from the Chino Water Basin and/or the City of Norco.</div></div>
           <div className="value-card fade"><div className="value-amt">$125M</div><div className="value-name">In-Place Infrastructure</div><div className="value-desc">Obama-era stimulus funding, Army Corps of Engineers flood mitigation, 6-lane bridge expansion, LED-lit synthetic and grass field infrastructure. $125M in estimated replacement costs.</div></div>
         </div>
