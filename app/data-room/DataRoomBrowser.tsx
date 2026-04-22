@@ -77,6 +77,14 @@ export default function DataRoomBrowser({ email }: { email: string }) {
     }
   }
 
+  function handleZipDownload() {
+    const url = `/api/data-room/download-zip?path=${encodeURIComponent(path)}`;
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `silverlakes-${path ? path.split('/').pop() : 'data-room'}.zip`;
+    a.click();
+  }
+
   return (
     <div style={{ minHeight: '100vh', background: '#060C1A', padding: '40px 24px' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
@@ -86,9 +94,17 @@ export default function DataRoomBrowser({ email }: { email: string }) {
             <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '13px', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em', marginBottom: '8px' }}>THREE LIONS CAPITAL</div>
             <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '28px', fontWeight: 400, color: '#fff' }}>Investor Data Room</h1>
           </div>
-          <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.3)', textAlign: 'right' }}>
-            <div>{email}</div>
-            <div style={{ marginTop: '4px', fontSize: '10px', color: 'rgba(196,154,60,0.6)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>NDA Signed</div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '10px' }}>
+            <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.3)', textAlign: 'right' }}>
+              <div>{email}</div>
+              <div style={{ marginTop: '4px', fontSize: '10px', color: 'rgba(196,154,60,0.6)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>NDA Signed</div>
+            </div>
+            <button
+              onClick={handleZipDownload}
+              style={{ padding: '8px 18px', background: 'rgba(196,154,60,0.12)', border: '1px solid rgba(196,154,60,0.4)', color: '#C49A3C', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
+            >
+              ⬇ Download All (ZIP)
+            </button>
           </div>
         </div>
 
@@ -171,7 +187,7 @@ export default function DataRoomBrowser({ email }: { email: string }) {
         </div>
 
         <div style={{ marginTop: '24px', fontSize: '11px', color: 'rgba(255,255,255,0.2)', textAlign: 'center' }}>
-          Confidential &middot; PDFs are watermarked with your email address &middot; Do not distribute
+          Confidential &middot; All files are watermarked with your email address &middot; Do not distribute
         </div>
       </div>
     </div>
