@@ -90,16 +90,13 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'No files found' }, { status: 404 });
   }
 
-  // Download + watermark ALL files in parallel
-  const results = await Promise.allSettled(
-    allFiles.map(filePath => processFile(filePath, session.email, today, rootPath))
-  );
-
+  // Process files sequentially — Sharp (native) crashes when called in parallel
   const zip = new JSZip();
-  for (const result of results) {
-    if (result.status === 'fulfilled' && result.value) {
-      zip.file(result.value.zipPath, result.value.buffer);
-    }
+  for (const filePath of allFiles) {
+    try {
+      const result = await processFile(filePath, session.email, today, rootPath);
+      if (result) zip.file(result.zipPath, result.buffer);
+    } catch { /* skip broken files, never crash the whole ZIP */ }
   }
 
   // Add a confidentiality notice at the root
