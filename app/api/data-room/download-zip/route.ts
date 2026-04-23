@@ -1,16 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 import { getSession } from '@/lib/session';
-import { addWatermark } from '@/lib/watermark';
-import { addImageWatermark } from '@/lib/watermark-image';
+import { addWatermarkCapped } from '@/lib/watermark';
 import { addXlsxWatermark } from '@/lib/watermark-xlsx';
 import JSZip from 'jszip';
 
 export const maxDuration = 60;
 
-const IMAGE_EXTS = ['jpg', 'jpeg', 'png', 'webp'];
-const EXCEL_EXTS = ['xlsx', 'xls'];
-const SKIP_EXTS = ['url']; // Vimeo links — no file to package
+// Only document types in the ZIP — photos and videos are too large for serverless
+const DOCUMENT_EXTS = ['pdf', 'xlsx', 'xls', 'csv', 'doc', 'docx', 'ppt', 'pptx', 'txt'];
+const SKIP_EXTS = ['url', 'jpg', 'jpeg', 'png', 'webp', 'gif', 'mp4', 'mov', 'avi', 'mp3'];
 
 async function listAllFiles(prefix: string): Promise<string[]> {
   const { data, error } = await supabaseAdmin.storage
@@ -20,7 +19,6 @@ async function listAllFiles(prefix: string): Promise<string[]> {
   if (error || !data) return [];
 
   const paths: string[] = [];
-  // Recurse folders in parallel for speed
   const folderPromises: Promise<string[]>[] = [];
 
   for (const item of data) {
@@ -47,7 +45,9 @@ async function processFile(
   rootPath: string
 ): Promise<{ zipPath: string; buffer: Buffer } | null> {
   const ext = filePath.split('.').pop()?.toLowerCase() || '';
+
   if (SKIP_EXTS.includes(ext)) return null;
+  if (!DOCUMENT_EXTS.includes(ext)) return null;
 
   const { data, error } = await supabaseAdmin.storage
     .from('sl-data-room')
@@ -59,14 +59,10 @@ async function processFile(
 
   if (ext === 'pdf') {
     try {
-      fileBuffer = Buffer.from(await addWatermark(new Uint8Array(fileBuffer), email, today));
+      // Cap at 10 pages — large govt docs (FEIR etc) would timeout otherwise
+      fileBuffer = Buffer.from(await addWatermarkCapped(new Uint8Array(fileBuffer), email, today, 10));
     } catch { /* use original */ }
-  } else if (IMAGE_EXTS.includes(ext)) {
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      fileBuffer = (await addImageWatermark(fileBuffer, email, today)) as any;
-    } catch { /* use original */ }
-  } else if (EXCEL_EXTS.includes(ext)) {
+  } else if (['xlsx', 'xls'].includes(ext)) {
     try {
       fileBuffer = Buffer.from(addXlsxWatermark(fileBuffer, email, today));
     } catch { /* use original */ }
@@ -83,28 +79,30 @@ export async function GET(req: NextRequest) {
   const rootPath = req.nextUrl.searchParams.get('path') || '';
   const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
-  // List all files first (recursive, parallel folder discovery)
   const allFiles = await listAllFiles(rootPath);
-
   if (allFiles.length === 0) {
     return NextResponse.json({ error: 'No files found' }, { status: 404 });
   }
 
-  // Process files sequentially — Sharp (native) crashes when called in parallel
-  const zip = new JSZip();
-  for (const filePath of allFiles) {
-    try {
-      const result = await processFile(filePath, session.email, today, rootPath);
-      if (result) zip.file(result.zipPath, result.buffer);
-    } catch { /* skip broken files, never crash the whole ZIP */ }
-  }
-
-  // Add a confidentiality notice at the root
-  zip.file('CONFIDENTIAL_NOTICE.txt',
-    `CONFIDENTIAL — DO NOT DISTRIBUTE\n\nThis data room was downloaded by: ${session.email}\nDate: ${today}\n\nAll files are watermarked and tracked. Unauthorized distribution is a violation of the NDA you have signed.\n`
+  // No Sharp in the ZIP path = safe to run all in parallel
+  const results = await Promise.allSettled(
+    allFiles.map(filePath => processFile(filePath, session.email, today, rootPath))
   );
 
-  // Log the access
+  const zip = new JSZip();
+  let docCount = 0;
+  for (const result of results) {
+    if (result.status === 'fulfilled' && result.value) {
+      zip.file(result.value.zipPath, result.value.buffer);
+      docCount++;
+    }
+  }
+
+  zip.file('CONFIDENTIAL_NOTICE.txt',
+    `CONFIDENTIAL - DO NOT DISTRIBUTE\n\nDownloaded by: ${session.email}\nDate: ${today}\n\nThis ZIP contains ${docCount} document(s). All PDFs and spreadsheets are watermarked.\nPhotos and videos are excluded from ZIP download due to file size - please download them individually from the data room.\n\nAll downloads are logged and tracked. Unauthorized distribution violates the NDA you signed.\n`
+  );
+
+  // Log
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || '';
   supabaseAdmin.from('sl_access_log').insert({
     email: session.email,
@@ -116,7 +114,7 @@ export async function GET(req: NextRequest) {
   const zipBuffer = await zip.generateAsync({
     type: 'nodebuffer',
     compression: 'DEFLATE',
-    compressionOptions: { level: 4 }, // level 4 = good balance of speed vs size
+    compressionOptions: { level: 3 },
   });
 
   const folderLabel = rootPath ? rootPath.split('/').pop() : 'data-room';

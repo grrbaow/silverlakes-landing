@@ -1,10 +1,6 @@
 import { PDFDocument, rgb, degrees } from 'pdf-lib';
 
-export async function addWatermark(pdfBytes: Uint8Array, email: string, date: string): Promise<Uint8Array> {
-  const doc = await PDFDocument.load(pdfBytes);
-  const pages = doc.getPages();
-  const text = `CONFIDENTIAL — ${email} — ${date}`;
-
+function stampPages(pages: ReturnType<PDFDocument['getPages']>, text: string) {
   for (const page of pages) {
     const { width, height } = page.getSize();
     const fontSize = 28;
@@ -21,6 +17,18 @@ export async function addWatermark(pdfBytes: Uint8Array, email: string, date: st
       });
     }
   }
+}
 
+export async function addWatermark(pdfBytes: Uint8Array, email: string, date: string): Promise<Uint8Array> {
+  const doc = await PDFDocument.load(pdfBytes);
+  stampPages(doc.getPages(), `CONFIDENTIAL — ${email} — ${date}`);
+  return doc.save();
+}
+
+// ZIP variant: caps pages watermarked to avoid serverless timeout on large PDFs
+export async function addWatermarkCapped(pdfBytes: Uint8Array, email: string, date: string, maxPages: number): Promise<Uint8Array> {
+  const doc = await PDFDocument.load(pdfBytes);
+  const pages = doc.getPages();
+  stampPages(pages.slice(0, maxPages), `CONFIDENTIAL — ${email} — ${date}`);
   return doc.save();
 }
