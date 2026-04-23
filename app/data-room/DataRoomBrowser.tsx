@@ -36,6 +36,7 @@ export default function DataRoomBrowser({ email }: { email: string }) {
   const [items, setItems] = useState<FileItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [breadcrumbs, setBreadcrumbs] = useState<string[]>([]);
+  const [zipping, setZipping] = useState(false);
 
   useEffect(() => {
     load(path);
@@ -77,12 +78,25 @@ export default function DataRoomBrowser({ email }: { email: string }) {
     }
   }
 
-  function handleZipDownload() {
-    const url = `/api/data-room/download-zip?path=${encodeURIComponent(path)}`;
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `silverlakes-${path ? path.split('/').pop() : 'data-room'}.zip`;
-    a.click();
+  async function handleZipDownload() {
+    if (zipping) return;
+    setZipping(true);
+    try {
+      const url = `/api/data-room/download-zip?path=${encodeURIComponent(path)}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Failed');
+      const blob = await res.blob();
+      const objUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = objUrl;
+      a.download = `silverlakes-${path ? path.split('/').pop() : 'data-room'}.zip`;
+      a.click();
+      URL.revokeObjectURL(objUrl);
+    } catch {
+      alert('Download failed. Please try again.');
+    } finally {
+      setZipping(false);
+    }
   }
 
   return (
@@ -101,10 +115,19 @@ export default function DataRoomBrowser({ email }: { email: string }) {
             </div>
             <button
               onClick={handleZipDownload}
-              style={{ padding: '8px 18px', background: 'rgba(196,154,60,0.12)', border: '1px solid rgba(196,154,60,0.4)', color: '#C49A3C', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
+              disabled={zipping}
+              style={{ padding: '8px 18px', background: zipping ? 'rgba(196,154,60,0.06)' : 'rgba(196,154,60,0.12)', border: '1px solid rgba(196,154,60,0.4)', color: '#C49A3C', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: zipping ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', gap: '8px', whiteSpace: 'nowrap', opacity: zipping ? 0.7 : 1, transition: 'opacity 0.2s' }}
             >
-              ⬇ Download All (ZIP)
+              {zipping ? (
+                <>
+                  <span style={{ display: 'inline-block', width: '11px', height: '11px', border: '2px solid rgba(196,154,60,0.3)', borderTop: '2px solid #C49A3C', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+                  Preparing ZIP...
+                </>
+              ) : (
+                <>⬇ Download All (ZIP)</>
+              )}
             </button>
+            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
           </div>
         </div>
 
