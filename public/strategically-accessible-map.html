@@ -12,7 +12,9 @@
 
   .lbl {
     font-family: 'Segoe UI', system-ui, sans-serif;
-    background: transparent;
+    background: rgba(255,255,255,0.88);
+    padding: 2px 4px;
+    border-radius: 2px;
     white-space: nowrap;
     line-height: 1.35;
   }
@@ -62,7 +64,7 @@
 <script>
 const map = L.map('map', {
   zoomControl: true,
-  scrollWheelZoom: false,
+  scrollWheelZoom: true,
   attributionControl: true
 }).setView([33.95, -117.85], 9);
 
@@ -134,7 +136,6 @@ var attractions = [
   { name: 'LA Galaxy',                   ll: [33.8411562, -118.3394828], sub: null },
   { name: 'Disneyland Park',             ll: [33.8120918, -117.9189742], sub: '27.4M annual visitors' },
   { name: "Knott's Berry Farm",          ll: [33.8443038, -118.0002265], sub: null },
-  { name: 'Disney California Adventure', ll: [33.8062236, -117.9199281], sub: null },
   { name: 'UC Riverside',                ll: [33.9737055, -117.3280644], sub: null },
   { name: 'USC',                         ll: [34.0223519, -118.285117],  sub: null },
   { name: 'UCLA',                        ll: [34.0699182, -118.4438495], sub: null },

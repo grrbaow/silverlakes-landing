@@ -12,86 +12,13 @@
     font-family: 'Segoe UI', system-ui, sans-serif;
     background: #f8f8f6;
     color: #1a1a1a;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
   }
 
   #map {
     width: 100%;
-    height: 480px;
-    flex-shrink: 0;
-  }
-
-  .panel {
-    padding: 20px 24px;
-    background: #fff;
-    border-top: 1px solid #e5e5e0;
-  }
-
-  .panel-title {
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #888;
-    margin-bottom: 14px;
-    font-weight: 500;
-  }
-
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
-
-  .card {
-    border-radius: 10px;
-    padding: 14px 16px;
-    border-left: 4px solid;
-  }
-
-  .card-30 { background: #EDF5FD; border-color: #378ADD; }
-  .card-60 { background: #E8F7F2; border-color: #1D9E75; }
-  .card-90 { background: #FDF0EA; border-color: #D85A30; }
-
-  .card-ring {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .card-30 .card-ring { color: #185FA5; }
-  .card-60 .card-ring { color: #0F6E56; }
-  .card-90 .card-ring { color: #993C1D; }
-
-  .card-pop {
-    font-size: 26px;
-    font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 4px;
-    color: #1a1a1a;
-  }
-
-  .card-desc {
-    font-size: 12px;
-    color: #666;
-    line-height: 1.4;
-  }
-
-  .attribution {
-    font-size: 10px;
-    color: #bbb;
-    text-align: right;
-    padding: 8px 24px;
-    background: #fff;
-    border-top: 1px solid #f0f0ec;
-  }
-
-  @media (max-width: 560px) {
-    .cards { grid-template-columns: 1fr; }
-    #map { height: 340px; }
+    height: 100vh;
   }
 </style>
 </head>
@@ -99,37 +26,14 @@
 
 <div id="map"></div>
 
-<div class="panel">
-  <p class="panel-title">Population catchment</p>
-  <div class="cards">
-    <div class="card card-30">
-      <div class="card-ring">30-mile radius</div>
-      <div class="card-pop">4.2M</div>
-      <div class="card-desc">Inland Empire + East LA</div>
-    </div>
-    <div class="card card-60">
-      <div class="card-ring">60-mile radius</div>
-      <div class="card-pop">14.8M</div>
-      <div class="card-desc">Greater Los Angeles DMA</div>
-    </div>
-    <div class="card card-90">
-      <div class="card-ring">90-mile radius</div>
-      <div class="card-pop">22.1M</div>
-      <div class="card-desc">SoCal + San Diego + IE</div>
-    </div>
-  </div>
-</div>
-
-<div class="attribution">Map data © OpenStreetMap contributors, © CARTO</div>
-
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-  const CENTER = [33.9292, -117.5496];
+  const CENTER = [33.9530944, -117.5540374];
   const MILES_TO_METERS = 1609.34;
 
   const map = L.map('map', {
     zoomControl: true,
-    scrollWheelZoom: false,
+    scrollWheelZoom: true,
     attributionControl: false
   }).setView(CENTER, 7);
 
