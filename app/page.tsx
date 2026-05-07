@@ -217,6 +217,91 @@ export default function Home() {
         </div>
       </div>
 
+      {/* PROGRAMMING & REVENUE ACTIVATION */}
+      <div className="section wrap fade">
+        <div className="eyebrow">Programming &amp; Revenue Activation</div>
+        <h2>Four Revenue <em>Activation Pillars</em></h2>
+        <div className="rule"></div>
+        <p className="lead">Ancillary revenue retained across all partnerships &mdash; all partner agreements structured to retain F&amp;B, parking, and ancillary on-site revenue to SilverLakes, independent of operator.</p>
+        <div className="prog-grid">
+          <div className="prog-col fade">
+            <div className="prog-col-header">Outdoor Fields</div>
+            <div className="prog-item"><div className="prog-item-title">Cal South / ECNL / MLS Next</div><div className="prog-item-body">Guaranteed min. tournament days; field rental + ancillary</div></div>
+            <div className="prog-item"><div className="prog-item-title">SL-Owned Events</div><div className="prog-item-body">$476K actuals &rarr; $1.46M&ndash;$2.9M (FY27&ndash;29)</div></div>
+            <div className="prog-item"><div className="prog-item-title">Youth Athletes United</div><div className="prog-item-body">Weekday multi-sport camps; facility fee model</div></div>
+            <div className="prog-item"><div className="prog-item-title">Flag Football (RCX)</div><div className="prog-item-body">Sanctioned tournaments + weekday practices</div></div>
+            <div className="prog-item"><div className="prog-item-title">Lacrosse / Ultimate</div><div className="prog-item-body">Off-weekend grass utilization; min. day guarantees</div></div>
+          </div>
+          <div className="prog-col fade">
+            <div className="prog-col-header">Indoor Arena <span style={{ opacity: 0.6, fontSize: '10px', fontWeight: 400, letterSpacing: 0 }}>(Phase II)</span></div>
+            <div className="prog-item"><div className="prog-item-title">Volleyball (USAV / LOVB)</div><div className="prog-item-body">Sanctioned leagues; pro league exposure pipeline</div></div>
+            <div className="prog-item"><div className="prog-item-title">Basketball / AAU</div><div className="prog-item-body">Adult leagues + drop-in; $78K&ndash;$518K (FY27&ndash;29)</div></div>
+            <div className="prog-item"><div className="prog-item-title">Hyrox Fitness</div><div className="prog-item-body">Competitions + gym membership; $198K&ndash;$396K (FY28&ndash;29)</div></div>
+            <div className="prog-item"><div className="prog-item-title">DanceOne</div><div className="prog-item-body">Licensed franchise; weekday utilization; $294K&ndash;$460K</div></div>
+            <div className="prog-item"><div className="prog-item-title">Indoor Lacrosse / Flag</div><div className="prog-item-body">Winter court inventory; NLL affiliates + RCX</div></div>
+          </div>
+          <div className="prog-col fade">
+            <div className="prog-col-header">Pickleball</div>
+            <div className="prog-item"><div className="prog-item-title">USA Pickleball / APP / PPA</div><div className="prog-item-body">National sanctioned tournaments + weekly leagues</div></div>
+            <div className="prog-item"><div className="prog-item-title">Club Membership Model</div><div className="prog-item-body">Monthly/annual passes; recurring revenue base</div></div>
+            <div className="prog-item"><div className="prog-item-title">Drop-In &amp; Clinics</div><div className="prog-item-body">Walk-in access + instruction; low capex, high margin</div></div>
+          </div>
+          <div className="prog-col fade">
+            <div className="prog-col-header">Elite Training</div>
+            <div className="prog-item"><div className="prog-item-title">Ipswich Town / PL Clubs</div><div className="prog-item-body">Full campus buyout; facility + F&amp;B + hotel commissions</div></div>
+            <div className="prog-item"><div className="prog-item-title">USL / MLS Dev. Academies</div><div className="prog-item-body">Season-long training agreements; match hosting</div></div>
+            <div className="prog-item"><div className="prog-item-title">Pro Revenue</div><div className="prog-item-body">Team Rooms + Hotel Commissions: $323K&ndash;$504K</div></div>
+          </div>
+        </div>
+      </div>
+
+      {/* UNTAPPED REVENUE VECTORS */}
+      <div className="section-alt">
+        <div className="section wrap fade">
+          <div className="eyebrow">Untapped Revenue Vectors</div>
+          <h2>Currently $0 &mdash; <em>High EBITDA Upside</em></h2>
+          <div className="rule"></div>
+          <p className="lead">$1.88M&ndash;$3.85M total upside by 2027. All five vectors identified at $0 in current actuals, with modeled activation beginning in Phase I. Each carries minimal incremental capital and high EBITDA conversion.</p>
+          <div className="rv-grid">
+            <div className="rv-card fade">
+              <div className="rv-phase">Phase I</div>
+              <div className="rv-title">Naming Rights &amp; Sponsorship</div>
+              <div className="rv-amount">$600K &ndash; $1.05M</div>
+              <div className="rv-margin">~95% EBITDA</div>
+              <div className="rv-body">Venue, field, and F&amp;B naming. Dedicated sponsorship sales function. Near-zero incremental cost.</div>
+            </div>
+            <div className="rv-card fade">
+              <div className="rv-phase">Phase I</div>
+              <div className="rv-title">Food Hall (12,000 SF)</div>
+              <div className="rv-amount">$300K &ndash; $500K</div>
+              <div className="rv-margin">Zero-cost basis</div>
+              <div className="rv-body">Tenant revenue share or sublease per stall. Existing footprint; no capital required.</div>
+            </div>
+            <div className="rv-card fade">
+              <div className="rv-phase">Phase I</div>
+              <div className="rv-title">Concerts &amp; Large-Scale Events</div>
+              <div className="rv-amount">$480K &ndash; $1.6M</div>
+              <div className="rv-margin">Promoter model</div>
+              <div className="rv-body">Scale Boots in the Park format via promoter partnership. Established infrastructure already on-site.</div>
+            </div>
+            <div className="rv-card fade">
+              <div className="rv-phase">Phase I</div>
+              <div className="rv-title">Drop-In &amp; Open Play</div>
+              <div className="rv-amount">Quick-Win</div>
+              <div className="rv-margin">Currently $0</div>
+              <div className="rv-body">Soccer, basketball, volleyball, pickleball. Fills dead weekday hours with zero incremental staffing.</div>
+            </div>
+            <div className="rv-card fade">
+              <div className="rv-phase">Phase I&ndash;II</div>
+              <div className="rv-title">Technology &amp; App Revenue</div>
+              <div className="rv-amount">$500K &ndash; $700K</div>
+              <div className="rv-margin">Recurring SaaS-like</div>
+              <div className="rv-body">Facility app for booking, scheduling, loyalty, and media. Scales with venue activation; high-margin.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* MARKET */}
       <div className="section wrap fade">
         <div className="eyebrow">Market Opportunity</div>
@@ -244,6 +329,31 @@ export default function Home() {
         </div>
       </div>
 
+      {/* POPULATION CATCHMENT MAP */}
+      <div className="section-alt">
+        <div className="section wrap fade">
+          <div className="eyebrow">Population Catchment</div>
+          <h2>22.1M People Within <em>90 Miles</em></h2>
+          <div className="rule"></div>
+          <p className="lead">SilverLakes sits at the center of the largest sports-participation market in the United States &mdash; with four major airports and a direct I-15 freeway connection.</p>
+          <iframe src="/catchment-map.html" className="map-frame" title="Population Catchment Map" />
+        </div>
+      </div>
+
+      {/* STRATEGICALLY ACCESSIBLE */}
+      <div className="section wrap fade">
+        <div className="eyebrow">Location &amp; Access</div>
+        <h2>Strategically <em>Accessible</em></h2>
+        <div className="rule"></div>
+        <iframe src="/strategically-accessible-map.html" className="map-frame" title="Strategically Accessible Map" />
+        <ul className="access-bullets">
+          <li>Driving distance of 5 largest counties in California</li>
+          <li>Accessible by major highways including I-15 and Riverside Frwy</li>
+          <li>4 major international airports (Ontario, LAX, Long Beach, OC John Wayne) within 60 miles</li>
+          <li>Near tourist destinations like Disneyland (30 mi) and Downtown LA (50 mi)</li>
+        </ul>
+      </div>
+
       {/* CAMPUS */}
       <div className="section-alt">
         <div className="section wrap fade">
@@ -259,6 +369,68 @@ export default function Home() {
             <div className="campus-cell fade"><div className="campus-icon">&#x1F3F7;</div><div className="campus-cell-title">Naming Rights</div><div className="campus-cell-body">Sponsorship currently at $0. Target $400K&ndash;$700K with naming rights.</div></div>
             <div className="campus-cell fade"><div className="campus-icon">&#x1F4A7;</div><div className="campus-cell-title">Water Rights</div><div className="campus-cell-body">Two on-site deep wells. Water at zero cost in perpetuity &mdash; $482M structural value excluded from IRR.</div></div>
             <div className="campus-cell fade"><div className="campus-icon">&#x1F3C6;</div><div className="campus-cell-title">Tournament HQ</div><div className="campus-cell-body">Premier tournament &amp; field sports hub. $3.32M today, $5.8M optimized. ~70% EBITDA margin.</div></div>
+          </div>
+        </div>
+      </div>
+
+      {/* FULLY ENTITLED */}
+      <div className="section wrap fade">
+        <div className="eyebrow">Entitlements &amp; Development Rights</div>
+        <h2>Fully <em>Entitled</em></h2>
+        <div className="rule"></div>
+        <p className="lead">Long-term certainty across a 122-acre regional sports campus &mdash; all required approvals already in place.</p>
+        <div className="entitled-grid">
+          <div className="entitled-item fade">
+            <div className="entitled-dot"></div>
+            <div><div className="entitled-title">99-Year Ground Lease</div><div className="entitled-body">Long-term land security with substantial remaining term &mdash; structural foundation for all Phase I and II development.</div></div>
+          </div>
+          <div className="entitled-item fade">
+            <div className="entitled-dot"></div>
+            <div><div className="entitled-title">Certified EIR (City Council Resolution 2009-07)</div><div className="entitled-body">March 2009 &mdash; binding mitigation framework already established. Environmental review complete.</div></div>
+          </div>
+          <div className="entitled-item fade">
+            <div className="entitled-dot"></div>
+            <div><div className="entitled-title">Conditional Use Permit No. 2008-09</div><div className="entitled-body">Authorizing equestrian, sports, entertainment, and public park uses across the full campus.</div></div>
+          </div>
+          <div className="entitled-item fade">
+            <div className="entitled-dot"></div>
+            <div><div className="entitled-title">Development Agreement (City Ordinance No. 934)</div><div className="entitled-body">Locks in long-term land-use protections for all planned improvements &mdash; a rare structural advantage.</div></div>
+          </div>
+          <div className="entitled-item fade">
+            <div className="entitled-dot"></div>
+            <div><div className="entitled-title">Phase 1A &amp; 1B Improvements Confirmed As-Built</div><div className="entitled-body">Per 2018 Amendment: soccer fields, sand rings, equestrian showgrounds, parking, infrastructure, on-site water wells.</div></div>
+          </div>
+        </div>
+      </div>
+
+      {/* SHOVEL-READY UPSIDE */}
+      <div className="section-alt">
+        <div className="section wrap fade">
+          <div className="eyebrow">Phase II Development</div>
+          <h2>Shovel-Ready <em>Upside</em></h2>
+          <div className="rule"></div>
+          <p className="lead">Additional development opportunities with no new approvals required &mdash; path to construction is standard building-permit process only.</p>
+          <div className="shovel-grid">
+            <div className="shovel-card fade">
+              <div className="shovel-num">&plusmn;135K SF</div>
+              <div className="shovel-title">Approved Footprint</div>
+              <div className="shovel-body">Phase 2 component under 2015 Lease Amendment requires a multi-purpose building or covered arena up to &plusmn;135,000 sq ft footprint.</div>
+            </div>
+            <div className="shovel-card fade">
+              <div className="shovel-num">0</div>
+              <div className="shovel-title">Additional Approvals Needed</div>
+              <div className="shovel-body">No further discretionary approval required &mdash; footprint and core uses already approved under CUP, EIR, and Ground Lease.</div>
+            </div>
+            <div className="shovel-card fade">
+              <div className="shovel-num">Permit Only</div>
+              <div className="shovel-title">Path to Construction</div>
+              <div className="shovel-body">Standard building-permit and design-review process only &mdash; no new entitlement risk or city council approval required.</div>
+            </div>
+            <div className="shovel-card fade">
+              <div className="shovel-num">Multi-Use</div>
+              <div className="shovel-title">Approved Use Mix</div>
+              <div className="shovel-body">Indoor sports, equestrian events, pro shop, cafeteria, athlete and coach accommodations, sponsor and reception areas. Permanent tenant improvement under Article 5.</div>
+            </div>
           </div>
         </div>
       </div>
@@ -306,6 +478,7 @@ export default function Home() {
           <div className="team-grid">
             <div className="team-card fade"><div className="avatar">BJ</div><div className="team-name">Brett M. Johnson</div><div className="team-role">Co-Founder &amp; Partner</div><a href="mailto:brett@threelionscapital.com" className="team-email">brett@threelionscapital.com</a></div>
             <div className="team-card fade"><div className="avatar">BB</div><div className="team-name">Berke Bakay</div><div className="team-role">Co-Founder &amp; Partner</div><a href="mailto:berke@threelionscapital.com" className="team-email">berke@threelionscapital.com</a></div>
+            <div className="team-card fade"><div className="avatar">IG</div><div className="team-name">Iain Gulin</div><div className="team-role">Partner</div><a href="mailto:iain@threelionscapital.com" className="team-email">iain@threelionscapital.com</a></div>
             <div className="team-card fade"><div className="avatar">AM</div><div className="team-name">Abdullah Mohsin</div><div className="team-role">Associate</div><a href="tel:+17736776463" className="team-email">(773) 677-6463</a><a href="mailto:abdullah@threelionscapital.com" className="team-email" style={{ marginTop: '6px' }}>abdullah@threelionscapital.com</a></div>
           </div>
           <div className="portfolio fade">

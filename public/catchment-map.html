@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SilverLakes Catchment Map</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #f8f8f6;
+    color: #1a1a1a;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #map {
+    width: 100%;
+    height: 480px;
+    flex-shrink: 0;
+  }
+
+  .panel {
+    padding: 20px 24px;
+    background: #fff;
+    border-top: 1px solid #e5e5e0;
+  }
+
+  .panel-title {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .card {
+    border-radius: 10px;
+    padding: 14px 16px;
+    border-left: 4px solid;
+  }
+
+  .card-30 { background: #EDF5FD; border-color: #378ADD; }
+  .card-60 { background: #E8F7F2; border-color: #1D9E75; }
+  .card-90 { background: #FDF0EA; border-color: #D85A30; }
+
+  .card-ring {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .card-30 .card-ring { color: #185FA5; }
+  .card-60 .card-ring { color: #0F6E56; }
+  .card-90 .card-ring { color: #993C1D; }
+
+  .card-pop {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 4px;
+    color: #1a1a1a;
+  }
+
+  .card-desc {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.4;
+  }
+
+  .attribution {
+    font-size: 10px;
+    color: #bbb;
+    text-align: right;
+    padding: 8px 24px;
+    background: #fff;
+    border-top: 1px solid #f0f0ec;
+  }
+
+  @media (max-width: 560px) {
+    .cards { grid-template-columns: 1fr; }
+    #map { height: 340px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<div class="panel">
+  <p class="panel-title">Population catchment</p>
+  <div class="cards">
+    <div class="card card-30">
+      <div class="card-ring">30-mile radius</div>
+      <div class="card-pop">4.2M</div>
+      <div class="card-desc">Inland Empire + East LA</div>
+    </div>
+    <div class="card card-60">
+      <div class="card-ring">60-mile radius</div>
+      <div class="card-pop">14.8M</div>
+      <div class="card-desc">Greater Los Angeles DMA</div>
+    </div>
+    <div class="card card-90">
+      <div class="card-ring">90-mile radius</div>
+      <div class="card-pop">22.1M</div>
+      <div class="card-desc">SoCal + San Diego + IE</div>
+    </div>
+  </div>
+</div>
+
+<div class="attribution">Map data © OpenStreetMap contributors, © CARTO</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  const CENTER = [33.9292, -117.5496];
+  const MILES_TO_METERS = 1609.34;
+
+  const map = L.map('map', {
+    zoomControl: true,
+    scrollWheelZoom: false,
+    attributionControl: false
+  }).setView(CENTER, 7);
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    subdomains: 'abcd',
+    maxZoom: 14
+  }).addTo(map);
+
+  const rings = [
+    { miles: 90, color: '#D85A30', label: '<strong>90-mile radius</strong><br>22.1M people<br><span style="color:#888;font-size:12px">SoCal + San Diego + IE</span>', dash: '6 4' },
+    { miles: 60, color: '#1D9E75', label: '<strong>60-mile radius</strong><br>14.8M people<br><span style="color:#888;font-size:12px">Greater Los Angeles DMA</span>', dash: null },
+    { miles: 30, color: '#378ADD', label: '<strong>30-mile radius</strong><br>4.2M people<br><span style="color:#888;font-size:12px">Inland Empire + East LA</span>', dash: null },
+  ];
+
+  rings.forEach(r => {
+    L.circle(CENTER, {
+      radius: r.miles * MILES_TO_METERS,
+      color: r.color,
+      weight: 2,
+      fillColor: r.color,
+      fillOpacity: 0.07,
+      dashArray: r.dash
+    }).addTo(map).bindPopup(r.label, { maxWidth: 200 });
+  });
+
+  const pinIcon = L.divIcon({
+    html: `<div style="
+      width: 14px; height: 14px;
+      background: #15606C;
+      border: 2.5px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.35);
+    "></div>`,
+    className: '',
+    iconAnchor: [7, 7]
+  });
+
+  L.marker(CENTER, { icon: pinIcon })
+    .addTo(map)
+    .bindPopup(`
+      <strong style="font-size:13px">SilverLakes Equestrian &amp; Sports Park</strong><br>
+      <span style="color:#666;font-size:12px">5555 Hamner Ave, Norco, CA</span>
+    `, { maxWidth: 220 })
+    .openPopup();
+</script>
+</body>
+</html>
