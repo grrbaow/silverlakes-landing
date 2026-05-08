@@ -10,66 +10,46 @@
   body { background: #f0ede8; }
   #map { width: 100%; height: 100vh; }
 
-  /* SilverLakes permanent label */
-  .sl-label {
+  .lbl {
     font-family: 'Segoe UI', system-ui, sans-serif;
+    background: rgba(255,255,255,0.95);
+    padding: 2px 5px;
+    border-radius: 3px;
     white-space: nowrap;
+    line-height: 1.3;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
     pointer-events: none;
   }
-  .sl-name {
-    font-size: 13px;
-    font-weight: 900;
+  .lbl-name {
+    font-size: 9px;
+    font-weight: 800;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: #b8860b;
     display: block;
-    text-shadow: 0 0 6px #fff, 0 0 3px #fff;
   }
-  .sl-sub {
-    font-size: 10px;
-    font-weight: 600;
-    color: #555;
+  .lbl-sub {
+    font-size: 8px;
+    font-weight: 500;
+    color: #777;
     display: block;
     margin-top: 1px;
-    text-shadow: 0 0 4px #fff, 0 0 2px #fff;
   }
 
-  /* Dot styles */
-  .dot-city      { width:7px;  height:7px;  background:#444;    border:1.5px solid #fff; border-radius:50%; cursor:pointer; }
-  .dot-county    { width:5px;  height:5px;  background:#aaa;    border:1px solid #fff;   border-radius:50%; cursor:pointer; }
-  .dot-airport   { width:11px; height:11px; background:#c9a84c; border:2px solid #fff;   border-radius:50%; box-shadow:0 1px 5px rgba(0,0,0,0.3); cursor:pointer; }
-  .dot-sl        { width:36px; height:36px; background:transparent; }
+  .city       .lbl-name { color: #222; }
+  .county     .lbl-name { color: #666; font-size: 8px; }
+  .county     .lbl-sub  { color: #999; }
+  .airport    .lbl-name { color: #9a6c00; }
+  .airport    .lbl-sub  { color: #b38a20; }
+  .attraction .lbl-name { color: #9a6c00; }
+  .attraction .lbl-sub  { color: #b38a20; }
+  .sl         .lbl-name { color: #9a6c00; font-size: 12px; font-weight: 900; }
+  .sl         .lbl-sub  { color: #555; font-size: 9px; }
 
-  /* Popup overrides */
-  .leaflet-popup-content-wrapper {
-    border-radius: 6px;
-    padding: 0;
-    box-shadow: 0 3px 14px rgba(0,0,0,0.2);
-  }
-  .leaflet-popup-content {
-    margin: 0;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-  }
-  .popup-inner {
-    padding: 10px 14px;
-    min-width: 140px;
-  }
-  .popup-name {
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: #1a1a1a;
-    display: block;
-    margin-bottom: 3px;
-  }
-  .popup-sub {
-    font-size: 11px;
-    color: #888;
-    display: block;
-  }
-  .popup-airport .popup-name { color: #9a6c00; }
-  .leaflet-popup-tip { display: none; }
+  .dot-city       { width:6px;  height:6px;  background:#555;    border:1.5px solid #fff; border-radius:50%; }
+  .dot-county     { width:1px;  height:1px;  background:transparent; }
+  .dot-airport    { width:10px; height:10px; background:#c9a84c; border:2px solid #fff; border-radius:50%; box-shadow:0 1px 5px rgba(0,0,0,0.3); }
+  .dot-attraction { width:8px;  height:8px;  background:#c9a84c; border:2px solid #fff; border-radius:50%; box-shadow:0 1px 4px rgba(0,0,0,0.25); }
+  .dot-sl         { width:36px; height:36px; background:transparent; }
 </style>
 </head>
 <body>
@@ -80,7 +60,7 @@ const map = L.map('map', {
   zoomControl: true,
   scrollWheelZoom: true,
   attributionControl: true
-}).setView([33.82, -117.85], 8);
+}).setView([33.95, -117.85], 9);
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
   attribution: '© OpenStreetMap contributors © CARTO',
@@ -88,74 +68,81 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
   maxZoom: 16
 }).addTo(map);
 
+map.createPane('dots');
+map.getPane('dots').style.zIndex = 600;
+
 map.createPane('labels');
 map.getPane('labels').style.zIndex = 650;
 map.getPane('labels').style.pointerEvents = 'none';
 
-// SilverLakes -- permanent star + label
-L.marker([33.9530944, -117.5540374], {
-  icon: L.divIcon({
-    className: '',
-    html: '<svg width="36" height="36" viewBox="0 0 36 36"><polygon points="18,2 21.8,13.5 34,13.5 24,20.5 27.5,32 18,25.5 8.5,32 12,20.5 2,13.5 14.2,13.5" fill="#c9a84c" stroke="#fff" stroke-width="1.5"/></svg>',
-    iconAnchor: [18, 18]
-  }),
-  zIndexOffset: 2000
-}).addTo(map);
+function addMarker(latlng, dotClass, lblClass, name, sub) {
+  var isSL = dotClass === 'dot-sl';
 
-L.marker([33.9530944, -117.5540374], {
-  icon: L.divIcon({
-    className: '',
-    html: '<div class="sl-label"><span class="sl-name">SilverLakes</span><span class="sl-sub">1.4M annual visitors</span></div>',
-    iconAnchor: [-12, 6]
-  }),
-  pane: 'labels',
-  zIndexOffset: 3000
-}).addTo(map);
-
-// Helper: dot marker with hover popup
-function addDot(latlng, dotClass, popupClass, name, sub) {
-  var popup = L.popup({
-    closeButton: false,
-    offset: [0, -4],
-    className: 'clean-popup'
-  }).setContent(
-    '<div class="popup-inner ' + popupClass + '">' +
-    '<span class="popup-name">' + name + '</span>' +
-    (sub ? '<span class="popup-sub">' + sub + '</span>' : '') +
-    '</div>'
-  );
-
-  var marker = L.marker(latlng, {
+  L.marker(latlng, {
+    pane: 'dots',
     icon: L.divIcon({
       className: '',
-      html: '<div class="' + dotClass + '"></div>',
-      iconAnchor: [dotClass === 'dot-airport' ? 5 : dotClass === 'dot-city' ? 3 : 2,
-                   dotClass === 'dot-airport' ? 5 : dotClass === 'dot-city' ? 3 : 2]
+      html: isSL
+        ? '<svg width="36" height="36" viewBox="0 0 36 36"><polygon points="18,2 21.8,13.5 34,13.5 24,20.5 27.5,32 18,25.5 8.5,32 12,20.5 2,13.5 14.2,13.5" fill="#c9a84c" stroke="#fff" stroke-width="1.5"/></svg>'
+        : '<div class="' + dotClass + '"></div>',
+      iconAnchor: isSL ? [18,18] : dotClass === 'dot-airport' ? [5,5] : dotClass === 'dot-attraction' ? [4,4] : [3,3]
     }),
-    zIndexOffset: 100
+    zIndexOffset: isSL ? 2000 : 100
   }).addTo(map);
 
-  marker.on('mouseover', function() { this.openPopup(); });
-  marker.on('mouseout',  function() { this.closePopup(); });
-  marker.on('click',     function() { this.openPopup(); });
-  marker.bindPopup(popup);
+  var html = '<div class="lbl ' + lblClass + '">'
+    + '<span class="lbl-name">' + name + '</span>'
+    + (sub ? '<span class="lbl-sub">' + sub + '</span>' : '')
+    + '</div>';
+
+  L.marker(latlng, {
+    pane: 'labels',
+    icon: L.divIcon({
+      className: '',
+      html: html,
+      iconAnchor: [-7, -2]
+    }),
+    zIndexOffset: isSL ? 3000 : 500
+  }).addTo(map);
 }
 
+// SilverLakes
+addMarker([33.9530944, -117.5540374], 'dot-sl', 'sl', 'SilverLakes', '1.4M annual visitors');
+
 // Cities
-addDot([34.055691,  -118.2487702], 'dot-city', '', 'Downtown Los Angeles', '49.1M annual visitors');
-addDot([33.8232286, -116.5106191], 'dot-city', '', 'Palm Springs', null);
+addMarker([34.0380585, -118.6923438], 'dot-city', 'city', 'Malibu', null);
+addMarker([33.7700504, -118.1937395], 'dot-city', 'city', 'Long Beach', null);
+addMarker([34.0118828, -118.4915504], 'dot-city', 'city', 'Santa Monica', null);
+addMarker([33.6594835, -117.9988026], 'dot-city', 'city', 'Huntington Beach', null);
+addMarker([34.055691,  -118.2487702], 'dot-city', 'city', 'Downtown Los Angeles', '49.1M annual visitors');
+addMarker([33.8365932, -117.9143012], 'dot-city', 'city', 'Anaheim', null);
+addMarker([33.6041944, -117.8738554], 'dot-city', 'city', 'Newport Beach', null);
+addMarker([33.4672256, -117.6981014], 'dot-city', 'city', 'Dana Point', null);
+addMarker([33.8232286, -116.5106191], 'dot-city', 'city', 'Palm Springs', null);
+addMarker([33.5427189, -117.7853568], 'dot-city', 'city', 'Laguna Beach', null);
 
 // Counties
-addDot([33.65,  -116.1],  'dot-county', '', 'Riverside County',      'pop. 2.5 million');
-addDot([34.5,   -116.4],  'dot-county', '', 'San Bernardino County', 'pop. 2.2 million');
-addDot([33.55,  -117.72], 'dot-county', '', 'Orange County',         'pop. 3.2 million');
-addDot([33.05,  -116.5],  'dot-county', '', 'San Diego County',      'pop. 3.3 million');
+addMarker([33.7174708, -117.8311428], 'dot-county', 'county', 'Orange County',         'pop. 3.2 million');
+addMarker([34.9592083, -116.419389],  'dot-county', 'county', 'San Bernardino County', 'pop. 2.2 million');
+addMarker([33.6825587, -115.4733554], 'dot-county', 'county', 'Riverside County',      'pop. 2.5 million');
+addMarker([33.2,       -116.8],       'dot-county', 'county', 'San Diego County',      'pop. 3.3 million');
 
 // Airports
-addDot([33.942153,  -118.4036052], 'dot-airport', 'popup-airport', 'LAX',               '73.7M passengers/yr');
-addDot([34.0559976, -117.5980922], 'dot-airport', 'popup-airport', 'Ontario Intl (ONT)', '7.1M passengers/yr');
-addDot([33.674687,  -117.8692422], 'dot-airport', 'popup-airport', 'John Wayne (SNA)',   '11.3M passengers/yr');
-addDot([33.8161064, -118.1512558], 'dot-airport', 'popup-airport', 'Long Beach (LGB)',   '4.2M passengers/yr');
+addMarker([33.942153,  -118.4036052], 'dot-airport', 'airport', 'Los Angeles Intl (LAX)',     '73.7M annual passengers');
+addMarker([33.674687,  -117.8692422], 'dot-airport', 'airport', 'John Wayne Airport (SNA)',   '11.3M annual passengers');
+addMarker([33.8161064, -118.1512558], 'dot-airport', 'airport', 'Long Beach Airport (LGB)',   '4.2M annual passengers');
+addMarker([34.0559976, -117.5980922], 'dot-airport', 'airport', 'Ontario Intl Airport (ONT)', '7.1M annual passengers');
+
+// Attractions & Universities
+addMarker([34.1370713, -118.3533061], 'dot-attraction', 'attraction', 'Universal Studios Hollywood', '8.7M annual visitors');
+addMarker([33.8411562, -118.3394828], 'dot-attraction', 'attraction', 'LA Galaxy',                   null);
+addMarker([33.8120918, -117.9189742], 'dot-attraction', 'attraction', 'Disneyland Park',             '27.4M annual visitors');
+addMarker([33.8443038, -118.0002265], 'dot-attraction', 'attraction', "Knott's Berry Farm",          null);
+addMarker([33.8062236, -117.9199281], 'dot-attraction', 'attraction', 'Disney California Adventure', null);
+addMarker([33.9737055, -117.3280644], 'dot-attraction', 'attraction', 'UC Riverside',                null);
+addMarker([34.0223519, -118.285117],  'dot-attraction', 'attraction', 'USC',                         null);
+addMarker([34.0699182, -118.4438495], 'dot-attraction', 'attraction', 'UCLA',                        null);
+addMarker([33.6429785, -117.8411678], 'dot-attraction', 'attraction', 'UC Irvine',                   null);
 </script>
 </body>
 </html>
