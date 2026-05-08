@@ -1305,6 +1305,53 @@
     margin-top: 40px;
 }
 
+.catchment-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.cstat {
+    border-radius: 10px;
+    padding: 20px 22px;
+    border-left: 4px solid;
+}
+
+.cstat-30 { background: #EDF5FD; border-color: #378ADD; }
+.cstat-60 { background: #E8F7F2; border-color: #1D9E75; }
+.cstat-90 { background: #FDF0EA; border-color: #D85A30; }
+
+.cstat-radius {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.cstat-30 .cstat-radius { color: #185FA5; }
+.cstat-60 .cstat-radius { color: #0F6E56; }
+.cstat-90 .cstat-radius { color: #993C1D; }
+
+.cstat-pop {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1;
+    color: #1a1a1a;
+    margin-bottom: 6px;
+}
+
+.cstat-desc {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.4;
+}
+
+@media (max-width: 600px) {
+    .catchment-stats { grid-template-columns: 1fr; }
+}
+
 .access-bullets {
     list-style: none;
     margin-top: 28px;

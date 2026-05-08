@@ -332,6 +332,23 @@ export default function Home() {
           <div className="rule"></div>
           <p className="lead">SilverLakes sits at the center of the largest sports-participation market in the United States &mdash; with four major airports and a direct I-15 freeway connection.</p>
           <iframe src="/catchment-map.html" className="map-frame" title="Population Catchment Map" />
+          <div className="catchment-stats">
+            <div className="cstat cstat-30">
+              <div className="cstat-radius">30-mile radius</div>
+              <div className="cstat-pop">4.2M</div>
+              <div className="cstat-desc">Inland Empire + East LA</div>
+            </div>
+            <div className="cstat cstat-60">
+              <div className="cstat-radius">60-mile radius</div>
+              <div className="cstat-pop">14.8M</div>
+              <div className="cstat-desc">Greater Los Angeles DMA</div>
+            </div>
+            <div className="cstat cstat-90">
+              <div className="cstat-radius">90-mile radius</div>
+              <div className="cstat-pop">22.1M</div>
+              <div className="cstat-desc">SoCal + San Diego + IE</div>
+            </div>
+          </div>
         </div>
       </div>
 
