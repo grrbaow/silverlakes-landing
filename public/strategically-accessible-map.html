@@ -66,7 +66,7 @@ const map = L.map('map', {
   zoomControl: true,
   scrollWheelZoom: true,
   attributionControl: true
-}).setView([33.95, -117.85], 9);
+}).setView([33.85, -117.9], 8);
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
   attribution: '© OpenStreetMap contributors © CARTO',
@@ -104,7 +104,6 @@ var cities = [
   { name: 'Santa Monica',         ll: [34.0118828, -118.4915504] },
   { name: 'Huntington Beach',     ll: [33.6594835, -117.9988026] },
   { name: 'Downtown Los Angeles', ll: [34.055691,  -118.2487702], sub: '49.1M annual visitors' },
-  { name: 'Anaheim',              ll: [33.8365932, -117.9143012] },
   { name: 'Newport Beach',        ll: [33.6041944, -117.8738554] },
   { name: 'Dana Point',           ll: [33.4672256, -117.6981014] },
   { name: 'Palm Springs',         ll: [33.8232286, -116.5106191] },
@@ -135,7 +134,6 @@ var attractions = [
   { name: 'Universal Studios Hollywood', ll: [34.1370713, -118.3533061], sub: '8.7M annual visitors' },
   { name: 'LA Galaxy',                   ll: [33.8411562, -118.3394828], sub: null },
   { name: 'Disneyland Park',             ll: [33.8120918, -117.9189742], sub: '27.4M annual visitors' },
-  { name: "Knott's Berry Farm",          ll: [33.8443038, -118.0002265], sub: null },
   { name: 'UC Riverside',                ll: [33.9737055, -117.3280644], sub: null },
   { name: 'USC',                         ll: [34.0223519, -118.285117],  sub: null },
   { name: 'UCLA',                        ll: [34.0699182, -118.4438495], sub: null },
