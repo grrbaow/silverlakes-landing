@@ -310,11 +310,6 @@ export default function Home() {
         <div className="market-layout">
           <div>
             <p className="lead" style={{ marginBottom: '32px' }}>22.1 million people across 5 SoCal counties &mdash; with global reach for training, tournaments, events, and partnerships across a 30/60/90-mile map.</p>
-            <div className="catchment">
-              <div className="ring fade"><div className="ring-badge r1">30 mi</div><div><div className="ring-pop r1">4.2M</div><div className="ring-lbl">Inland Empire + East LA</div></div></div>
-              <div className="ring fade"><div className="ring-badge r2">60 mi</div><div><div className="ring-pop r2">14.8M</div><div className="ring-lbl">Greater Los Angeles DMA</div></div></div>
-              <div className="ring fade"><div className="ring-badge r3">90 mi</div><div><div className="ring-pop r3">22.1M</div><div className="ring-lbl">SoCal + San Diego + IE</div></div></div>
-            </div>
           </div>
           <div className="market-stats-grid">
             <div className="mstat fade"><div className="mstat-val">64%</div><div className="mstat-lbl">Population growth since 2000 (1.5M &rarr; 2.5M)</div></div>
