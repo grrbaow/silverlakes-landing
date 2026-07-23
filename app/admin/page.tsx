@@ -2,19 +2,25 @@
 
 import { useState, useEffect } from 'react';
 
-type Tab = 'signers' | 'allowlist' | 'access-log';
+type Tab = 'signers' | 'allowlist' | 'email-rules' | 'access-log';
 
 interface Signer { id: string; full_name: string; email: string; organization: string; signed_at: string; ip_address: string; ip_city: string; ip_region: string; ip_country: string; pdf_storage_path: string; }
 interface AllowlistEntry { id: string; email: string; notes: string; added_at: string; }
+interface DisposableOverride { id: string; domain: string; action: 'block' | 'allow'; notes: string; added_at: string; }
 interface LogEntry { id: string; email: string; file_path: string; action: string; ip_address: string; accessed_at: string; }
 
 export default function AdminPage() {
   const [tab, setTab] = useState<Tab>('signers');
   const [signers, setSigners] = useState<Signer[]>([]);
   const [allowlist, setAllowlist] = useState<AllowlistEntry[]>([]);
+  const [overrides, setOverrides] = useState<DisposableOverride[]>([]);
   const [log, setLog] = useState<LogEntry[]>([]);
   const [newEmail, setNewEmail] = useState('');
   const [newNotes, setNewNotes] = useState('');
+  const [newDomain, setNewDomain] = useState('');
+  const [newAction, setNewAction] = useState<'block' | 'allow'>('block');
+  const [newRuleNotes, setNewRuleNotes] = useState('');
+  const [ruleError, setRuleError] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => { loadTab(tab); }, [tab]);
@@ -25,6 +31,8 @@ export default function AdminPage() {
       const r = await fetch('/api/admin/signers'); const d = await r.json(); setSigners(d.signers || []);
     } else if (t === 'allowlist') {
       const r = await fetch('/api/admin/allowlist'); const d = await r.json(); setAllowlist(d.allowlist || []);
+    } else if (t === 'email-rules') {
+      const r = await fetch('/api/admin/disposable-overrides'); const d = await r.json(); setOverrides(d.overrides || []);
     } else {
       const r = await fetch('/api/admin/access-log'); const d = await r.json(); setLog(d.log || []);
     }
@@ -43,6 +51,20 @@ export default function AdminPage() {
     loadTab('allowlist');
   }
 
+  async function addOverride(e: React.FormEvent) {
+    e.preventDefault();
+    setRuleError('');
+    const r = await fetch('/api/admin/disposable-overrides', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ domain: newDomain, action: newAction, notes: newRuleNotes }) });
+    if (!r.ok) { const d = await r.json(); setRuleError(d.error || 'Could not save'); return; }
+    setNewDomain(''); setNewRuleNotes(''); setNewAction('block');
+    loadTab('email-rules');
+  }
+
+  async function removeOverride(id: string) {
+    await fetch(`/api/admin/disposable-overrides?id=${id}`, { method: 'DELETE' });
+    loadTab('email-rules');
+  }
+
   function downloadNda(id: string) { window.open(`/api/admin/download-nda?id=${id}`, '_blank'); }
 
   const fmt = (d: string) => new Date(d).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
@@ -57,9 +79,9 @@ export default function AdminPage() {
 
         {/* Tabs */}
         <div style={{ display: 'flex', gap: '0', marginBottom: '32px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-          {(['signers', 'allowlist', 'access-log'] as Tab[]).map(t => (
+          {(['signers', 'allowlist', 'email-rules', 'access-log'] as Tab[]).map(t => (
             <button key={t} onClick={() => setTab(t)} style={{ padding: '12px 24px', background: 'none', border: 'none', borderBottom: tab === t ? '2px solid #C49A3C' : '2px solid transparent', color: tab === t ? '#C49A3C' : 'rgba(255,255,255,0.4)', fontSize: '12px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', cursor: 'pointer', marginBottom: '-1px' }}>
-              {t === 'access-log' ? 'Access Log' : t.charAt(0).toUpperCase() + t.slice(1)}
+              {t === 'access-log' ? 'Access Log' : t === 'email-rules' ? 'Email Rules' : t.charAt(0).toUpperCase() + t.slice(1)}
             </button>
           ))}
         </div>
@@ -131,6 +153,49 @@ export default function AdminPage() {
                   );
                 })}
                 {allowlist.length === 0 && <tr><td colSpan={5} style={{ ...tdSt, color: 'rgba(255,255,255,0.2)', textAlign: 'center', padding: '40px' }}>No entries yet.</td></tr>}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {/* EMAIL RULES (disposable-email overrides) */}
+        {!loading && tab === 'email-rules' && (
+          <div>
+            <form onSubmit={addOverride} style={{ display: 'flex', gap: '12px', marginBottom: '8px', flexWrap: 'wrap' }}>
+              <input value={newDomain} onChange={e => setNewDomain(e.target.value)} required placeholder="tempmail.com" style={{ ...inputSt, flex: '1', minWidth: '180px' }} />
+              <select value={newAction} onChange={e => setNewAction(e.target.value as 'block' | 'allow')} style={{ ...inputSt, minWidth: '150px' }}>
+                <option value="block">Block (disposable)</option>
+                <option value="allow">Allow (always permit)</option>
+              </select>
+              <input value={newRuleNotes} onChange={e => setNewRuleNotes(e.target.value)} placeholder="Notes (optional)" style={{ ...inputSt, flex: '1', minWidth: '180px' }} />
+              <button type="submit" style={{ padding: '12px 24px', background: '#C49A3C', color: '#060C1A', fontSize: '12px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', border: 'none', cursor: 'pointer' }}>Add</button>
+            </form>
+            {ruleError && <div style={{ color: '#f87171', fontSize: '12px', marginBottom: '8px' }}>{ruleError}</div>}
+            <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.25)', marginBottom: '28px' }}>
+              Enter a domain only (e.g. <code style={{ color: 'rgba(255,255,255,0.4)' }}>tempmail.com</code>). <strong style={{ color: 'rgba(255,255,255,0.45)' }}>Block</strong> stops a temp-mail provider the built-in list misses. <strong style={{ color: 'rgba(255,255,255,0.45)' }}>Allow</strong> force-permits a real domain the list wrongly flags. Allow always wins. Takes effect immediately, no redeploy.
+            </div>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+              <thead><tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                {['Rule', 'Domain', 'Notes', 'Added', ''].map(h => <th key={h} style={{ textAlign: 'left', padding: '10px 12px', fontSize: '10px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>{h}</th>)}
+              </tr></thead>
+              <tbody>
+                {overrides.map(o => {
+                  const isAllow = o.action === 'allow';
+                  return (
+                    <tr key={o.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                      <td style={tdSt}>
+                        <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.08em', padding: '2px 8px', borderRadius: '3px', background: isAllow ? 'rgba(74,222,128,0.15)' : 'rgba(239,68,68,0.15)', color: isAllow ? '#4ade80' : '#f87171' }}>
+                          {isAllow ? 'ALLOW' : 'BLOCK'}
+                        </span>
+                      </td>
+                      <td style={tdSt}>{`*@${o.domain}`}</td>
+                      <td style={{ ...tdSt, color: 'rgba(255,255,255,0.4)' }}>{o.notes || '—'}</td>
+                      <td style={tdSt}>{fmt(o.added_at)}</td>
+                      <td style={tdSt}><button onClick={() => removeOverride(o.id)} style={{ padding: '4px 12px', background: 'rgba(239,68,68,0.15)', color: '#f87171', fontSize: '11px', border: '1px solid rgba(239,68,68,0.3)', cursor: 'pointer' }}>Remove</button></td>
+                    </tr>
+                  );
+                })}
+                {overrides.length === 0 && <tr><td colSpan={5} style={{ ...tdSt, color: 'rgba(255,255,255,0.2)', textAlign: 'center', padding: '40px' }}>No custom rules. The built-in disposable list is still active.</td></tr>}
               </tbody>
             </table>
           </div>

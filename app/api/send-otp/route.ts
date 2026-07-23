@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 import { sendOtpEmail } from '@/lib/resend';
+import { candidateDomains, isDisposableEmail } from '@/lib/disposable-email';
+import { fetchDomainOverrides } from '@/lib/domain-rules';
 import bcrypt from 'bcryptjs';
 
 export async function POST(req: NextRequest) {
@@ -11,6 +13,16 @@ export async function POST(req: NextRequest) {
   }
 
   const normalizedEmail = email.toLowerCase().trim();
+
+  // Block temporary / disposable mailboxes so access can't be gained anonymously.
+  // Static list + admin-managed overrides (sl_disposable_overrides); allow wins.
+  const overrides = await fetchDomainOverrides(candidateDomains(normalizedEmail));
+  if (isDisposableEmail(normalizedEmail, overrides)) {
+    return NextResponse.json(
+      { error: 'Please use a permanent work or personal email address. Temporary or disposable email addresses are not accepted for data room access.' },
+      { status: 400 }
+    );
+  }
 
   // Rate limit: max 3 OTPs per email per hour
   const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
