@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useDwellTracker } from '@/lib/useDwellTracker';
 
 interface FileItem {
   name: string;
@@ -33,6 +34,11 @@ function fileIcon(name: string) {
 
 export default function DataRoomBrowser({ email }: { email: string }) {
   const [path, setPath] = useState('');
+  // A4 dwell: in-app viewer is behind a flag (default off -> keeps the live new-tab
+  // behaviour, zero UX change) until Brett flips NEXT_PUBLIC_DWELL_VIEWER=true.
+  const { start, stop } = useDwellTracker();
+  const [viewer, setViewer] = useState<{ url: string; name: string } | null>(null);
+  const dwellOn = process.env.NEXT_PUBLIC_DWELL_VIEWER === 'true';
   const [items, setItems] = useState<FileItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [breadcrumbs, setBreadcrumbs] = useState<string[]>([]);
@@ -69,7 +75,12 @@ export default function DataRoomBrowser({ email }: { email: string }) {
     const filePath = path ? `${path}/${name}` : name;
     const url = `/api/data-room/download?path=${encodeURIComponent(filePath)}&action=${action}`;
     if (action === 'view') {
-      window.open(url, '_blank');
+      if (dwellOn) {
+        setViewer({ url, name });
+        start(filePath);
+      } else {
+        window.open(url, '_blank');
+      }
     } else {
       const a = document.createElement('a');
       a.href = url;
@@ -102,6 +113,15 @@ export default function DataRoomBrowser({ email }: { email: string }) {
   return (
     <div style={{ minHeight: '100vh', background: '#060C1A', padding: '40px 24px' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        {viewer && (
+          <div onClick={() => { stop(); setViewer(null); }} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.72)', zIndex: 1000, display: 'flex', flexDirection: 'column', padding: '24px' }}>
+            <div onClick={(e) => e.stopPropagation()} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#fff', marginBottom: 12, gap: 12 }}>
+              <span style={{ fontSize: 14, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{viewer.name}</span>
+              <button onClick={() => { stop(); setViewer(null); }} style={{ background: '#fff', border: 'none', borderRadius: 8, padding: '6px 14px', fontSize: 13, fontWeight: 600, cursor: 'pointer', flexShrink: 0 }}>Close</button>
+            </div>
+            <iframe src={viewer.url} title={viewer.name} onClick={(e) => e.stopPropagation()} style={{ flex: 1, width: '100%', border: 'none', borderRadius: 8, background: '#fff' }} />
+          </div>
+        )}
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '40px' }}>
           <div>
