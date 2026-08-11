@@ -490,7 +490,6 @@ export default function Home() {
           <div className="team-grid">
             <div className="team-card fade"><div className="avatar">BJ</div><div className="team-name">Brett M. Johnson</div><div className="team-role">Co-Founder &amp; Partner</div><a href="mailto:brett@threelionscapital.com" className="team-email">brett@threelionscapital.com</a></div>
             <div className="team-card fade"><div className="avatar">BB</div><div className="team-name">Berke Bakay</div><div className="team-role">Co-Founder &amp; Partner</div><a href="mailto:berke@threelionscapital.com" className="team-email">berke@threelionscapital.com</a></div>
-            <div className="team-card fade"><div className="avatar">IG</div><div className="team-name">Iain Gulin</div><div className="team-role">Partner</div><a href="mailto:iain@threelionscapital.com" className="team-email">iain@threelionscapital.com</a></div>
             <div className="team-card fade"><div className="avatar">AM</div><div className="team-name">Abdullah Mohsin</div><div className="team-role">Associate</div><a href="tel:+17736776463" className="team-email">(773) 677-6463</a><a href="mailto:abdullah@threelionscapital.com" className="team-email" style={{ marginTop: '6px' }}>abdullah@threelionscapital.com</a></div>
           </div>
           <div className="portfolio fade">
