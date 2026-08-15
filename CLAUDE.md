@@ -3,10 +3,13 @@
 ## Project Overview
 Investor landing page for SilverLakes Equestrian & Sports Park (Norco, CA). Built for Three Lions Capital. Deployed to Vercel.
 
-- **Repo:** github.com/shrey987/silverlakes-landing
+- **Repo:** github.com/grrbaow/silverlakes-landing (the old `shrey987/silverlakes-landing`
+  remote still works but only via a redirect — update your remote when convenient)
 - **Vercel project:** `silverlakes-landing` (team: grrow, ID: `prj_JXxpO6lTqZHcMbZagsBoyDQGxY5p`)
-- **Deploy:** Push to `main` on GitHub — Vercel auto-deploys. NEVER use manual Vercel API trigger.
+- **Deploy:** `vercel --prod` from a clean `main`. See Deployment Process.
 - **Framework:** Next.js 14 App Router
+- **Commit identity:** must be `shrey@grrbaow.com` or Vercel blocks the deploy. The repo is
+  pinned via `git config user.email`, so do not override it with `-c user.email` on a merge.
 
 ---
 
@@ -86,13 +89,22 @@ Team grid: `repeat(4, 1fr)` in globals.css (unchanged, 3 cards sit in it fine)
 ---
 
 ## Deployment Process
-1. Make changes to files
-2. `git add <files>`
-3. `git commit -m "message"`
-4. `git push origin main`
-5. Vercel auto-deploys. Done.
 
-**Do NOT** use `vercel deploy` CLI or manual Vercel REST API — GitHub push triggers auto-deploy.
+**There is NO GitHub auto-deploy on this project.** Verified 15 Aug 2026: the Vercel project
+has no git integration at all (`link.type` is null in `GET /v9/projects/<id>`). Pushing to
+`main` deploys NOTHING. An earlier version of this file claimed push-to-main auto-deploys and
+told you never to use the CLI. That was wrong, and it is how a stale tree reached production.
+
+Deploying is therefore a deliberate manual act from a local tree, which is exactly why the
+staleness check below matters.
+
+1. Make changes, `git add`, `git commit`
+2. `git push origin main` (source of truth, does not deploy)
+3. Confirm the tree is a superset of production, see below
+4. `vercel --prod --yes --token="$VERCEL_TOKEN" --scope=grrow`
+5. Fetch the live URL and confirm the change is actually served
+
+If someone reconnects the GitHub integration later, update this section.
 
 ### Never deploy a branch that is behind main
 On 11 Aug 2026 a production deploy was made from `build6-dwell`, a branch cut BEFORE the
@@ -109,4 +121,9 @@ first. A build is only safe to promote when it is a superset of what production 
 ---
 
 ## Last Updated
+2026-08-15 — Iain Gulin removed from the team section for the second time, and the cause fixed.
+A `vercel --prod` from the stale `build6-dwell` branch had overwritten the removal. Merged that
+branch into `main` (and `main` back into it) so both carry the removal plus the dwell tracking,
+corrected the false auto-deploy instructions above, and pinned the commit identity.
+
 2026-05-08 — Map fixes: catchment center corrected, stat cards removed, Disney CA Adventure removed from accessible map, labels got opaque backgrounds, both maps now scroll-zoomable.
