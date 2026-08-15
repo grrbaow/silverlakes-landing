@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/check-removed-people.mjs",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "check:people": "node scripts/check-removed-people.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2",

@@ -106,6 +106,17 @@ staleness check below matters.
 
 If someone reconnects the GitHub integration later, update this section.
 
+### The team section is guarded at build time
+`npm run prebuild` runs `scripts/check-removed-people.mjs` before every `next build`, on every
+deploy path including `vercel --prod` from a dirty local directory. If Iain Gulin's name or
+email is anywhere in `app/`, `lib/` or `components/`, **the build exits 1 and `next build`
+never runs**, so a build containing him cannot become a deployment.
+
+Verified 15 Aug 2026 by re-inserting his card: exit 1, `next build` did not run. Removed it:
+build passes. It is a real wall, not a comment.
+
+Only remove someone from that list when **they themselves** ask to come back. Do not bypass it.
+
 ### Never deploy a branch that is behind main
 On 11 Aug 2026 a production deploy was made from `build6-dwell`, a branch cut BEFORE the
 commit that removed Iain Gulin. It overwrote the good deploy and put his name back on the
