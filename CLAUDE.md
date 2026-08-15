@@ -62,12 +62,18 @@ Both maps are **standalone HTML files** in `public/`, embedded in `page.tsx` via
 6. Strategically Accessible (iframe + 4 bullet points)
 7. Fully Entitled section
 8. Shovel-Ready Upside section
-9. Team section (4 columns: 4 team members including Iain Gulin)
+9. Team section (3 team members, see Team below)
 10. Data Room CTA / footer
 
 ### Team
-4 members: Brett Johnson (CEO), Berke Bakay (COO), [other], Iain Gulin (Partner — iain@threelionscapital.com)
-Team grid: `repeat(4, 1fr)` in globals.css
+3 members, in this order: Brett M. Johnson (Co-Founder & Partner), Berke Bakay (Co-Founder & Partner),
+Abdullah Mohsin (Associate).
+
+DO NOT ADD Iain Gulin. He asked to be taken off the site on 10 Aug 2026 and asked again on 11 Aug
+after a stale-branch deploy put him back. He stays off until he himself asks to be restored.
+Anyone re-adding a fourth card, or deploying a branch cut before 6a0cb3d, reintroduces him.
+
+Team grid: `repeat(4, 1fr)` in globals.css (unchanged, 3 cards sit in it fine)
 
 ### CSS Classes (key additions)
 `.prog-grid`, `.prog-col`, `.prog-col-header`, `.prog-item` — Programming section
@@ -87,6 +93,18 @@ Team grid: `repeat(4, 1fr)` in globals.css
 5. Vercel auto-deploys. Done.
 
 **Do NOT** use `vercel deploy` CLI or manual Vercel REST API — GitHub push triggers auto-deploy.
+
+### Never deploy a branch that is behind main
+On 11 Aug 2026 a production deploy was made from `build6-dwell`, a branch cut BEFORE the
+commit that removed Iain Gulin. It overwrote the good deploy and put his name back on the
+live site. The client noticed and had to ask twice.
+
+`main` is the ONLY production branch. Before promoting any other branch, check what it drops:
+
+    git rev-list --count <branch>..origin/main    # commits main has that this branch LACKS
+
+If that is not 0, the branch is stale and deploying it REMOVES live work. Merge main into it
+first. A build is only safe to promote when it is a superset of what production already serves.
 
 ---
 
