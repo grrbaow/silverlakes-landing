@@ -27,7 +27,7 @@ export default function AdminLoginPage() {
     <div style={{ minHeight: '100vh', background: '#060C1A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div style={{ width: '100%', maxWidth: '360px', padding: '24px' }}>
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '13px', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em', marginBottom: '10px' }}>THREE LIONS CAPITAL</div>
+          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '13px', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em', marginBottom: '10px' }}>THREE LIONS CAPITAL MANAGEMENT LLC</div>
           <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '28px', fontWeight: 400, color: '#fff' }}>Admin Access</h1>
         </div>
         <form onSubmit={login} style={{ background: 'rgba(13,25,41,0.9)', border: '1px solid rgba(255,255,255,0.08)', padding: '32px' }}>

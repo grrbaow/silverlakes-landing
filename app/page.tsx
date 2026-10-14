@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <>
       <nav id="nav">
-        <div className="nav-brand">Three Lions Capital</div>
+        <div className="nav-brand">Three Lions Capital Management LLC</div>
         <div className="nav-badge">Confidential &middot; Qualified Investors Only</div>
       </nav>
 
@@ -63,7 +63,7 @@ export default function Home() {
           <div className="eyebrow">The Opportunity</div>
           <h2>An Irreplaceable Asset at<br />an <em>Inflection Point</em></h2>
           <div className="rule"></div>
-          <p className="lead">Three Lions Capital has entered into an exclusive agreement to acquire SilverLakes Sports Park &mdash; among the premier privately operated facilities of its kind in North America &mdash; built on a foundation of favorable long-term ground lease terms and substantial on-site infrastructure whose replacement cost would be materially higher today.</p>
+          <p className="lead">Three Lions Capital Management LLC has entered into an exclusive agreement to acquire SilverLakes Sports Park &mdash; among the premier privately operated facilities of its kind in North America &mdash; built on a foundation of favorable long-term ground lease terms and substantial on-site infrastructure whose replacement cost would be materially higher today.</p>
           <div className="pillars">
             <div className="pillar fade">
               <div className="pillar-num">01</div>
@@ -484,7 +484,7 @@ export default function Home() {
       <div className="section-alt">
         <div className="section wrap fade">
           <div className="eyebrow">The Sponsor</div>
-          <h2><em>Three Lions Capital</em></h2>
+          <h2><em>Three Lions Capital Management LLC</em></h2>
           <div className="rule"></div>
           <p className="lead">Founded by Brett M. Johnson and Berke Bakay &mdash; with direct relationships with national and global sports leagues and experience with accretive capital structures including tax increment financing, EB-5 capital, and public grants.</p>
           <div className="team-grid">
@@ -518,7 +518,7 @@ export default function Home() {
               <Link href="/access" className="cta-btn">Access Data Room</Link>
             </div>
             <div className="disclaimer fade">
-              CONFIDENTIAL &mdash; DO NOT DISTRIBUTE. This document is intended solely for the recipient and may not be reproduced or shared without prior written consent of Three Lions Capital. It is for informational purposes only and does not constitute an offer to sell or solicitation to buy any security. All investments involve risk. Past performance is not indicative of future results. Prospective investors should conduct independent due diligence and consult their legal, tax, and financial advisors prior to making any investment decision.
+              CONFIDENTIAL &mdash; DO NOT DISTRIBUTE. This document is intended solely for the recipient and may not be reproduced or shared without prior written consent of Three Lions Capital Management LLC. It is for informational purposes only and does not constitute an offer to sell or solicitation to buy any security. All investments involve risk. Past performance is not indicative of future results. Prospective investors should conduct independent due diligence and consult their legal, tax, and financial advisors prior to making any investment decision.
             </div>
           </div>
         </div>
@@ -526,7 +526,7 @@ export default function Home() {
 
       {/* FOOTER */}
       <footer>
-        <div className="footer-left">&#169; 2025 Three Lions Capital &nbsp;&middot;&nbsp; SilverLakes Sports Park &nbsp;&middot;&nbsp; Norco, California</div>
+        <div className="footer-left">&#169; 2025 Three Lions Capital Management LLC &nbsp;&middot;&nbsp; SilverLakes Sports Park &nbsp;&middot;&nbsp; Norco, California</div>
         <div className="footer-right">Confidential &middot; For Qualified Investors Only &middot; Past performance is not indicative of future results.</div>
       </footer>
 

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'SilverLakes Sports Park — Three Lions Capital',
+  title: 'SilverLakes Sports Park — Three Lions Capital Management LLC',
   description: 'Investor data room for SilverLakes Sports Park, Norco, California.',
 };
 

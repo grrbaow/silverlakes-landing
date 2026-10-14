@@ -28,7 +28,7 @@ export async function sendInvestorNdaCopy(email: string, name: string, pdfBuffer
       <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;padding:32px;">
         <h2 style="color:#060C1A;">Thank you for signing, ${name}.</h2>
         <p style="color:#444;">Your executed Confidentiality and Use Agreement for Silver Lakes Sports Park is attached. You now have access to the investor data room.</p>
-        <p style="color:#888;font-size:13px;margin-top:24px;">Three Lions Capital Management, LLC</p>
+        <p style="color:#888;font-size:13px;margin-top:24px;">Three Lions Capital Management LLC</p>
       </div>
     `,
     attachments: [{ filename: 'Silver-Lakes-NDA-Signed.pdf', content: pdfBuffer }],

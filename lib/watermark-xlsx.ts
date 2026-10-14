@@ -13,7 +13,7 @@ export function addXlsxWatermark(buffer: Buffer, email: string, date: string): B
     ['Recipient', email],
     ['Date Accessed', date],
     [''],
-    ['Three Lions Capital Management, LLC'],
+    ['Three Lions Capital Management LLC'],
   ]);
 
   // Style the header cell

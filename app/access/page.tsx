@@ -46,7 +46,7 @@ export default function AccessPage() {
       <div style={{ width: '100%', maxWidth: '440px' }}>
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
           <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '15px', color: 'rgba(255,255,255,0.5)', letterSpacing: '0.1em', marginBottom: '12px' }}>
-            THREE LIONS CAPITAL
+            THREE LIONS CAPITAL MANAGEMENT LLC
           </div>
           <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '36px', fontWeight: 400, color: '#fff', marginBottom: '8px' }}>
             {step === 'email' ? 'Access the Data Room' : 'Verify Your Email'}

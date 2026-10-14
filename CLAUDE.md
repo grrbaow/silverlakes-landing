@@ -1,7 +1,7 @@
 # SilverLakes Landing Page — CLAUDE.md
 
 ## Project Overview
-Investor landing page for SilverLakes Equestrian & Sports Park (Norco, CA). Built for Three Lions Capital. Deployed to Vercel.
+Investor landing page for SilverLakes Equestrian & Sports Park (Norco, CA). Built for Three Lions Capital Management LLC. Deployed to Vercel.
 
 - **Repo:** github.com/grrbaow/silverlakes-landing (the old `shrey987/silverlakes-landing`
   remote still works but only via a redirect — update your remote when convenient)

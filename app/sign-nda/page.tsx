@@ -380,7 +380,7 @@ export default function SignNdaPage() {
 
       <div className="nda-wrap">
         <div className="nda-header">
-          <p className="nda-eyebrow">Three Lions Capital</p>
+          <p className="nda-eyebrow">Three Lions Capital Management LLC</p>
           <h1 className="nda-title">Confidentiality Agreement</h1>
           <p className="nda-subtitle">Review and sign the NDA below to access the Silver Lakes data room.</p>
         </div>
